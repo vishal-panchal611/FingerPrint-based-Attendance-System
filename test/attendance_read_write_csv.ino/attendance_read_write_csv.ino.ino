@@ -1,4 +1,5 @@
 #include<SoftwareSerial.h>
+#include<string.h>
 #include<SPI.h>
 #include<SD.h>
 
@@ -100,33 +101,43 @@ bool readVals(String* v1, String* v2, String* v3) {
 
 void compare()
 {
+    bool flag = 0;
   while(readVals(&roll_id, &name, &finger_data))
   {
     //comparing with database the received data
-    if (dataSerial == roll_id)
+    Serial.println(roll_id);
+    if (dataSerial.equals(roll_id))
     {
+      flag =1;
       store();
+      Serial.println("match found!");
+      break;
     }
-    else
-    {
-      Serial.println("no match found");
-    }
+    
+    
   }
+    if(flag != 1)
+      Serial.println("no match found");
+    
 }
 
 void store()
 {
-  if(SD.exists("database_write.csv"))
+  Serial.println("inside store()");
+  if(SD.exists("dwt.csv"))
   {
-    sensorData = SD.open("database_write.csv", FILE_WRITE);
+    Serial.println("file found in SD");
+    sensorData = SD.open("dwt.csv", FILE_WRITE);
+    Serial.println(sensorData);
     if(sensorData)
     {
+        Serial.println("file opened successfully");
         sensorData.println(dataSerial);
-        sensorData.println("dataSerial");
+       
         sensorData.close();
     }
     else
     Serial.println("error opening csv file");
-}
+ }
 
 }
