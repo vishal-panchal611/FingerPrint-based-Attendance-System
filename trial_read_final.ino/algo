@@ -1,0 +1,9 @@
+check if the data is available on serial
+if yes then store that in some varibale
+go inside the function
+
+create a loop
+check the variable with each data in the file
+if found then go to store function
+
+else keep checking

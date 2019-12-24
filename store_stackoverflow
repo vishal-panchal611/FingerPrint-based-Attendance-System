@@ -1,0 +1,59 @@
+I highly suggest checking out this YouTube video (https://www.youtube.com/watch?v=5v5A3j7Rrco), especially around 21:30. It goes over in detail to do exactly what you are asking for, mainly the headings with IDs for each data point. At the end of the day you are going to need something that looks similar to this:
+
+float id = 0; //used to provide a numbered ID to each data point
+
+void setup(){
+//initialize all your once-run variables and such
+}
+
+void loop(){
+  //Write Log File Header
+  File logFile = SD.open("NAME.csv", FILE_WRITE); 
+
+  if (logFile){
+    logFile.println(", , , ,"); //Just a leading blank line, incase there was previous data
+
+    String header = "ID, Time, Light, Temp"; //These will be the headers for your excel file, CHANGE "" to whatevr headers you would like to use
+    logFile.println(header);
+    logFile.close();
+    Serial.println(header);
+  }
+
+  else {
+    Serial.println("Couldn't open log file");
+  }
+}
+}
+
+
+
+
+
+***********************************************************************************************
+
+The read() method works character-wise, not element-wise. Then you have to rethink your algorithm to loop over characters:
+
+store each character in a buffer
+send the whole buffer (i.e. a single element) when you see a delimiter
+Example:
+
+const size_t BUFFER_SZ = ...;
+char buffer[BUFFER_SZ];
+size_t pos = 0;    // current write position in buffer
+int c;
+
+// While we can read a character:
+while ((c = <file>.read()) != -1) {
+
+    // If we get a delimiter, then we have a complete element.
+    if (c == ',' || c == '\n') {
+        buffer[pos] = '\0';         // terminate the string
+        raspberry.println(buffer);  // send to the RPi
+        pos = 0;                    // ready for next element
+    }
+
+    // Otherwise, store the character in the buffer.
+    else if (pos < BUFFER_SZ-1) {
+        buffer[pos++] = c;
+    }
+}
