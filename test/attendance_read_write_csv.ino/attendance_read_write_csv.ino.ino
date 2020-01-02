@@ -113,8 +113,6 @@ void compare()
       Serial.println("match found!");
       break;
     }
-    
-    
   }
     if(flag != 1)
       Serial.println("no match found");

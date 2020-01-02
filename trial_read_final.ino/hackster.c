@@ -261,7 +261,8 @@ uint8_t getFingerprintID() {
     myFile.close();
   }
   */
-}// returns -1 if failed, otherwise returns ID #
+}
+// returns -1 if failed, otherwise returns ID #
 int getFingerprintIDez() {
   uint8_t p = finger.getImage();
   if (p != FINGERPRINT_OK)  return -1;
